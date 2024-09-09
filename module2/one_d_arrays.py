@@ -13,7 +13,7 @@ def main():
     print(array, type(array))
 
     numbers = [-2, 1, -5, 10]
-    print(numberrs, type(numbers))
+    print(numbers, type(numbers))
     # convert list into arrays
     new_array = np.array(numbers)
     print(new_array)
@@ -34,7 +34,14 @@ def main():
     numbers = [-2, 1, -5, 10]
     new_array = np.array(numbers, dtype=np.short)
     print(new_array, new_array.dtype)
-    
+    # unsigned data
+    pos_numbers = [2, 1, 5, 10]
+    new_array = np.array(pos_numbers, dype=np.ushort) 
+    #ushort = unsigned short
+    print(new_array, new_array.dtype)
+    # FLoat data
+    new_array = np.array(pos_numbers, dtype=np.float32)
+    print(new_array, new_array.dtype)
 
 if __name__ == '__main__':
     main() # if the value is = to main then call this entry point
