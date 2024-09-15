@@ -1,6 +1,6 @@
 
 #print(__name__)
-"""Practice some of tnumpy array identities
+"""Practice some of the numpy array identities
 """
 
 import numpy as np
