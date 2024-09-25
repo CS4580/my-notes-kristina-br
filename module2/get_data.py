@@ -32,7 +32,30 @@ def extract_file(zip_path):
         # list extracted files
         print(f'Extracted files: {zip_ref.namelist()}')
 
+        df = pd.read_csv(csv_file_name)
+        return df
 
+
+def extract_zip_file(zip_path):
+    """Extracta ZIP file to the current working directory"""
+
+    print(f"Extracting {zip_path}")
+    # Get the current working directory
+    extract_path = os.getcwd()
+
+    # open the zip file
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        # Extract all the contents to the current working directory
+        zip_ref.extractall(extract_path)
+        print(f"File unzipped successfully and extracted")
+        # list the extracted files
+        print(f"Extracted files: {zip_ref.namelist()}")
+
+#TODO create a function to download the files
+# from kaggle directly by passing the dataset name
+
+def download_zip_file(url):
+    pass
 
 def main():
     """Driven Function
@@ -41,8 +64,17 @@ def main():
     data = 'pandas01Data.zip'
     #download_file(server_url, data)
     #unzip_file(data)
-    print(urlretrieve(server_url, data))
+    #print(urlretrieve(server_url, data))
     
+    # if no arguments are provided, print a usage message
+    #if len(sys.argv) < 2:
+    #    print("something")
+
+    url = 'http://icarus.cs.weber.edu/~hvalle/cs4580/data/'
+    #filename = 'pandas01Data.zip'
+    query_parameters = 
+    response = requests.get(url)
+    #with open("gdp_by_country.zip")
 
 if __name__ == '__main__':
     main() # if the value is = to main then call this entry point
