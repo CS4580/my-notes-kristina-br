@@ -3,11 +3,12 @@
 
 import pandas as pd
 import numpy as np
-import get_data as gt # your package for downloading zips
+import get_data as gt  # your package for downloading zips
 
 # constants
-k = 10 #numbr of closest matches
-BASE_CASE_ID = 88763 #IMDB_id for 'Back to the Future'
+k = 10  # numbr of closest matches
+BASE_CASE_ID = 88763  # IMDB_id for 'Back to the Future'
+
 
 def main():
     print(f'Task 1: Download data set from server')
@@ -18,7 +19,6 @@ def main():
     data_file = f'{gt.DATA_FOLDER}/{dataset_file}'
     data = gt.load_data(data_file, index_col='IMDB_id')
     print(f'Loaded {len(data)} records')
-    
 
 
 if __name__ == '__main__':

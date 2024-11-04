@@ -40,3 +40,24 @@ Find the distance between these points:
 - y = (4,4)
 
 Distance = 5.65685...
+
+### KNN with Jaccard Similarity Index
+Compares members of two individual sets to determin which members are `shared` and which are `distinct`.
+The index measures the similarity between the two sets.
+
+$$
+J(A, B) = \frac{|A \cap B|}{|A \cup B|}
+$$
+
+### KNN with Weighted Jaccard Simlarity Index
+The traditional Jaccard works well when doing 
+`one-to-one` comparisons between a category.
+
+One solution is the `weighted` version.
+- build a ditionary for `each genre` of the movies in our preferred list
+
+```python
+# see
+def weighted_jaccard_weighted():
+
+```
