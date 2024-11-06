@@ -2,6 +2,7 @@
 """
 import pandas as pd
 import numpy as np
+import Levenshtein
 import get_data as gt  # your package
 
 # Constants
@@ -124,8 +125,8 @@ def main():
     print(f'Task 6: KNN Analysis with Jaccard Similarity Weighted')
     base_case = data.loc[BASE_CASE_ID]
     second_case = data.loc[SECOND_CASE_ID]
-    print(f"Comparing all movies to our base case:[{
-          base_case['title']}] and [{second_case['title']}]")
+    print(f"""Comparing all movies to our base case:[{
+          base_case['title']}] and [{second_case['title']}]""")
     # Add a second and third filter: only ratings ['G', 'PG', 'PG-13'], and stars >= 5
     data = data[data['year'] >= BASE_YEAR]  # add filter
     data = data[(data['stars'] >= 5) & (
@@ -134,6 +135,13 @@ def main():
                         comparison_type='genres', metric_func=jaccard_similarity_weighted,
                         # could leave this as just jaccard_similarity but eh
                         sorted_value='jaccard_similarity_weighted')
+    # Task 7: KNN with Levenshtein Distance
+    print(f'Task 7:KNN analysis with levenshtein distance')
+    data = gt.load_data(data_file, index_col='IMDB_id')
+    base_case = data.loc[BASE_CASE_ID]
+    print(f"Comparing all movies to our base base:[{base_case['title']}]")
+    knn_analysis_driver(data_df=data, base_case=base_case, comparison_type='title',
+                        metric_func=Levenshtein.distance, sorted_value='levenshtein_distance')
 
 
 if __name__ == '__main__':
