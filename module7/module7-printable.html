@@ -1,0 +1,202 @@
+<h1 id="module-7-notes-metrics-and-model-development">Module 7 Notes: Metrics and Model Development</h1>
+<h2 id="metrics">Metrics</h2>
+<p>Metrics should be unbiased, universal, and concise.</p>
+<pre><code><span class="hljs-number">1.</span> A way <span class="hljs-built_in">to</span> obtain similar responses
+<span class="hljs-number">2.</span> A way <span class="hljs-built_in">to</span> measure <span class="hljs-keyword">the</span> performance
+<span class="hljs-number">3.</span> A way <span class="hljs-built_in">to</span> measure prediction
+</code></pre>
+<p>For our sample analysis we will use <code>KNN</code> K-Nearest Neighbor</p>
+<pre><code>-<span class="ruby"> K is an arbitrary pick
+</span>-<span class="ruby"> Need a <span class="hljs-string">"base case"</span>
+</span>-<span class="ruby"> Compare the neighbors
+</span>-<span class="ruby"> Sort the results</span>
+</code></pre>
+<p>Data set for this analysis:</p>
+<pre><code class="lang-bash">icarus<span class="hljs-selector-class">.cs</span><span class="hljs-selector-class">.weber</span><span class="hljs-selector-class">.edu</span>:~hvalle/cs4580/data/movies.csv
+</code></pre>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-keyword">import</span> get_data <span class="hljs-keyword">as</span> gt  # download <span class="hljs-built_in">and</span> load <span class="hljs-keyword">data</span>
+<span class="hljs-keyword">import</span> Levenshtein  # Levenshtein distance
+from sklearn.metrics.pairwise <span class="hljs-keyword">import</span> cosine_similarity
+from sklearn.feature_extraction.<span class="hljs-keyword">text</span> <span class="hljs-keyword">import</span> TfidfVectorizer
+</code></pre>
+<h3 id="knn-euclidean-distance">KNN-Euclidean Distance</h3>
+<p>The Euclidean distance is the distance between points
+    in <code>N-dimensional</code> space.</p>
+<p>Formula</p>
+<p>$
+    d(p, q) = \sqrt{\sum_{i=1}^n (q_i = p_i)^2}
+    $</p>
+<p>where</p>
+<ul>
+    <li>$p = (p_1, p_2, \dots p_n)$</li>
+    <li>$q = (q_1, q_2, \dots, q_n)$</li>
+</ul>
+<h4 id="task-">Task:</h4>
+<p>Find the distance between these points:</p>
+<ul>
+    <li>x = (0,0)</li>
+    <li>y = (4,4)</li>
+</ul>
+<p>Distance = 5.65685...</p>
+<p><code>euclidean_distance(base_case_year: int, comparator_year: int):</code></p>
+<h3 id="knn-with-jaccard-similarity-index">KNN with Jaccard Similarity Index</h3>
+<p>Compares members of two individual sets to determin which members are <code>shared</code> and which are
+    <code>distinct</code>.
+    The index measures the similarity between the two sets.
+</p>
+<h3 id="knn-with-weighted-jaccard-simlarity-index">KNN with Weighted Jaccard Simlarity Index</h3>
+<p>The traditional Jaccard works well when doing
+    <code>one-to-one</code> comparisons between a category.
+</p>
+<p>One solution is the <code>weighted</code> version.</p>
+<ul>
+    <li>build a ditionary for <code>each genre</code> of the movies in our preferred list</li>
+</ul>
+<pre><code class="lang-python"><span class="hljs-comment"># see</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">weighted_jaccard_weighted</span><span class="hljs-params">()</span></span>
+</code></pre>
+<h3 id="knn-with-levenshtein-distance">KNN with Levenshtein Distance</h3>
+<p>an initial sequence to a target sequence.</p>
+<ul>
+    <li>It is used to determine the difference between two sequences (strings)</li>
+    <li>It is the distance between two words (minimum number of digits edits)<ul>
+            <li>insertions, deletions, or substitutions</li>
+        </ul>
+    </li>
+</ul>
+<p>$$
+    D(i, j) =
+    \begin{cases}
+    j &amp; \text{if } i = 0 \
+    i &amp; \text{if } j = 0 \
+    D(i-1, j-1) &amp; \text{if } s[i] = t[j] \
+    1 + \min {D(i-1, j), D(i, j-1), D(i-1, j-1)} &amp; \text{if } s[i] \neq t[j]
+    \end{cases}
+    $$</p>
+<h4 id="for-example-">For example:</h4>
+<p>Consider these strings:</p>
+<ul>
+    <li>s = &#39;kitten&#39;</li>
+    <li>t = &#39;sitting&#39;</li>
+</ul>
+<p>Find the <code>Levenshtein</code> Distance</p>
+<ol>
+    <li>Substitute <code>k</code>with <code>s</code> in <code>kitten</code> -&gt; <code>sitten</code>(1 substitution)
+    </li>
+    <li>Substitute <code>e</code> with <code>i</code> in <code>sitten</code> -&gt; <code>sittin</code> (1 substitution)
+    </li>
+    <li>Insert <code>g</code> at the end of <code>sittin</code> -&gt; <code>sitting</code> (1 insertion)</li>
+</ol>
+<p>Result is 3 edits, so the distance is $ = 3$</p>
+<pre><code class="lang-python"><span class="hljs-comment"># see</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">knn_levenshtein_title</span><span class="hljs-params">()</span></span>
+</code></pre>
+<p>Need this package:</p>
+<pre><code class="lang-bash"># VE must <span class="hljs-keyword">be</span> running <span class="hljs-keyword">python</span> <span class="hljs-number">3.11</span> <span class="hljs-built_in">or</span> less
+pip install Levenshtein
+</code></pre>
+<h3 id="knn-cosine-similarity-distance">KNN Cosine Similarity Distance</h3>
+<p>This is used to measure the cosine of the angle between two vectors in a
+    multi-dimensional space. This is commonly used in text analysis to measure
+    similarities between documents.</p>
+<p>$$
+    \text{Cosine Similarity} = \cos(\theta) = \
+    \frac{A \cdot B}{|A| |B|}
+    = \frac{\sum_{i=1}^{n} A_i B<em>i}{ \sqrt{sum</em>{i=1} A<em>i^2} \cdot \sqrt{\sum</em>{i=1}^{n} B_i^2}}
+    $$</p>
+<p>Where</p>
+<ul>
+    <li>$ A \cdot B$ is the dot product of vectors $A$ and $B$</li>
+    <li>$|A|$ and $|B|$ are the agnitude (or Euclidean norms) of vectors $A$ and $B$</li>
+</ul>
+<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cosine_similarity_function</span><span class="hljs-params">(base_case_plot, comparator_plot)</span></span><span class="hljs-symbol">:</span>
+</code></pre>
+<h3 id="knn-combining-metrics-and-filtering-conditions">KNN Combining Metrics and Filtering Conditions</h3>
+<p>Two main concerns with <code>filtering</code>:</p>
+<ul>
+    <li>Making it too complicated (think hard SQL queries)</li>
+    <li>too strict (end up with no results)</li>
+</ul>
+<p>Combine <code>metrics</code> to generate <code>one</code> result:</p>
+<ul>
+    <li>Weight each metric<ul>
+            <li>Should metrics contribute equally? (50%-50%, 80%-80%)</li>
+        </ul>
+    </li>
+    <li>Normalization of the combine metric<ul>
+            <li>Make sure they have the same range</li>
+        </ul>
+    </li>
+</ul>
+<p>For our example, we will use:</p>
+<ul>
+    <li><code>Cosine</code>: Use 20% of the <code>plot</code></li>
+    <li><code>Weighted Jaccard</code>: Use 80% of <code>genres</code></li>
+</ul>
+<pre><code class="lang-python">def cosine_and_weighted_jaccard(df: pd.DataFrame, plots: str, comparator_movie: pd.core.series.Series):
+
+<span class="hljs-comment">## Prediction Metrics</span>
+
+If I predict <span class="hljs-keyword">that</span> <span class="hljs-keyword">it</span> will snow tomorrow, <span class="hljs-keyword">to</span> check <span class="hljs-keyword">my</span> answer I have <span class="hljs-keyword">to</span> wait <span class="hljs-keyword">until</span> <span class="hljs-keyword">it</span>'s tomorrow <span class="hljs-keyword">and</span> see <span class="hljs-keyword">if</span> <span class="hljs-keyword">it</span> snows.
+
+A **prediction** <span class="hljs-keyword">is</span> simply a guess <span class="hljs-keyword">about</span> what <span class="hljs-keyword">is</span> going <span class="hljs-keyword">to</span> transpire. One prediction <span class="hljs-keyword">is</span> `yes` <span class="hljs-keyword">or</span> `no`.
+
+How do we measure <span class="hljs-keyword">the</span> `accuracy` <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> prediction?
+
+New <span class="hljs-built_in">file</span>:
+```bash
+accuracy_metric.py
+</code></pre>
+<h3 id="confusion-matrix">Confusion Matrix</h3>
+<p>This is done to measure how well your classification model is. This model could be <code>binary</code> or
+    <code>multi-class</code>. Each entry in a confusion matrix represents a specific combination
+    <code>predicted vs actual</code> classes.
+</p>
+<p>For binary classification, you have <code>four</code> parts:</p>
+<ul>
+    <li><code>True Positive (TP)</code>: Correctly predicted positive observations</li>
+    <li><code>True Negative (TN)</code>: Correctly predicted negative observations</li>
+    <li><code>False Positive (FP)</code>: Incorrectly predicted positive observations (also known as
+        <code>Type I Error</code>)
+    </li>
+    <li><code>False Negative (FN)</code>: Incorrectly preedicted negative observations (aka <code>Type II Error</code>)
+    </li>
+</ul>
+<p>The structure of the matrix is as follows: </p>
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>Predicted Positive</th>
+            <th>Predicted Negative</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Actual Positive</td>
+            <td>True Positive (TP)</td>
+            <td>False Negative (FN)</td>
+        </tr>
+        <tr>
+            <td>Actual Negative</td>
+            <td>False Positive (FP)</td>
+            <td>True Negative (TN)</td>
+        </tr>
+    </tbody>
+</table>
+<p>Key metrics:</p>
+<ul>
+    <li><strong>Accuracy</strong> = $\frac{{TP + TN}}{{Tp + TN + FP + FN}}$</li>
+    <li><strong>Precision</strong> = $\frac{{TP}}{{TP + FP}}$ (useful for imbalance classes-- which means something like
+        more yes&#39;s than no&#39;s)</li>
+    <li><strong>Recall</strong> (or <strong>Sensitivity</strong>) = $\frac{{TP}}{{TP + FN}}$</li>
+    <li><strong>F1 Score</strong> = $2 \times \frac{{Precision \times Recall}}{{Precision + Recall}}$ (also known as
+        harmonic mean of Precision and Recall)</li>
+</ul>
+<p>New python file:</p>
+<pre><code class="lang-bash"><span class="hljs-selector-tag">confusion_matrix</span><span class="hljs-selector-class">.py</span>
+</code></pre>
+<p>```</p>
